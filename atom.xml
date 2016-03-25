@@ -4,7 +4,7 @@
   <subtitle><![CDATA[fmt.Println("Hello 久久 and 长长")]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://leonzhu1981.github.io/"/>
-  <updated>2015-12-19T08:27:44.000Z</updated>
+  <updated>2016-03-25T17:28:07.000Z</updated>
   <id>http://leonzhu1981.github.io/</id>
   
   <author>
@@ -15,24 +15,413 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
-    <title><![CDATA[Hello World]]></title>
-    <link href="http://leonzhu1981.github.io/2015/hello-world/"/>
-    <id>http://leonzhu1981.github.io/2015/hello-world/</id>
-    <published>2015-12-19T08:27:44.000Z</published>
-    <updated>2015-12-19T08:27:44.000Z</updated>
-    <content type="html"><![CDATA[<p>Welcome to <a href="http://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="http://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="http://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
-<h2 id="Quick_Start"><a href="#Quick_Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create_a_new_post"><a href="#Create_a_new_post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a href="http://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
-<h3 id="Run_server"><a href="#Run_server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="http://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p>
-<h3 id="Generate_static_files"><a href="#Generate_static_files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="http://hexo.io/docs/generating.html" target="_blank" rel="external">Generating</a></p>
-<h3 id="Deploy_to_remote_sites"><a href="#Deploy_to_remote_sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="http://hexo.io/docs/deployment.html" target="_blank" rel="external">Deployment</a></p>
+    <title><![CDATA[高性能Linux服务器编程-Part 1-TCP/IP协议概述.]]></title>
+    <link href="http://leonzhu1981.github.io/2016/high-performance-linux-server-programming-part1-tcp-ip-summarize/"/>
+    <id>http://leonzhu1981.github.io/2016/high-performance-linux-server-programming-part1-tcp-ip-summarize/</id>
+    <published>2016-03-25T08:53:03.000Z</published>
+    <updated>2016-03-25T17:28:07.000Z</updated>
+    <content type="html"><![CDATA[<h2 id="关于本系列文章"><a class="header-anchor" href="#关于本系列文章">¶</a>关于本系列文章</h2>
+<hr>
+<p>我在学习TCP/IP协议以及Linux服务器端编程时, 原本打算学习和参考三本经典书籍:</p>
+<ol>
+<li><a href="http://book.douban.com/subject/1088054/" target="_blank" rel="external">TCP/IP详解 卷1：协议</a><br>
+<img src="http://img3.doubanio.com/lpic/s1543906.jpg" alt="TCP/IP详解 卷1：协议"></li>
+<li><a href="http://book.douban.com/subject/25900403/" target="_blank" rel="external">UNIX环境高级编程(第3版)</a><br>
+<img src="http://img3.douban.com/lpic/s4436543.jpg" alt="UNIX环境高级编程(第3版)"></li>
+<li><a href="http://book.douban.com/subject/4859464/" target="_blank" rel="external">UNIX网络编程 卷1：套接字联网API</a><br>
+<img src="http://img3.doubanio.com/lpic/s4437258.jpg" alt="UNIX网络编程 卷1：套接字联网API"></li>
+</ol>
+<p>在经过阅读了之后, 发现这三本书不是那么容易入门, 书也太厚了, 不方便阅读. 偶然的机会, 我在多看上发现了一本还算不错的入门书籍:<br>
+<strong><a href="http://book.douban.com/subject/24722611/" target="_blank" rel="external">Linux高性能服务器编程</a></strong><br>
+<img src="http://img3.doubanio.com/lpic/s27327287.jpg" alt="Linux高性能服务器编程"></p>
+<p>这本书有以下几个特点:</p>
+<ul>
+<li>书比较薄, 并涵盖了我想了解和学习的知识点, 很适合入门.</li>
+<li>有很多需要实际动手的Demo, 能够帮助读者理解.</li>
+<li>有电子版, 随时都能阅读: <a href="https://read.douban.com/ebook/15233070/?dcs=subject-einfo&amp;dcm=douban&amp;dct=24722611" target="_blank" rel="external">豆瓣电子版</a> <a href="http://www.duokan.com/book/55818" target="_blank" rel="external">多看电子版</a> PS: 多看电子版的代码排版有点问题, 希望多看能够早点修复.</li>
+</ul>
+<p>这个系列的文章是我阅读<a href="http://book.douban.com/subject/24722611/" target="_blank" rel="external">Linux高性能服务器编程</a>的读书笔记, 并对需要深入学习的部分加入了一些自己的理解和认识, 以及额外的参考资料. 如果你认为本系列对你的学习能够有所帮助, 希望能够购买原版图书.</p>
+<h2 id="rfc文档"><a class="header-anchor" href="#rfc文档">¶</a>RFC文档</h2>
+<hr>
+<p>What is RFC?</p>
+<blockquote>
+<p>A Request for Comments (RFC) is a formal document from the Internet Engineering Task Force ( IETF ) that is the result of committee drafting and subsequent review by interested parties. Some RFCs are informational in nature.</p>
+</blockquote>
+<p>当你对某个TCP/IP的问题搞不明白时, 最好去查看的RFC文档, 这才是最权威的解释.</p>
+<ul>
+<li><a href="http://man.chinaunix.net/develop/rfc/default.htm" target="_blank" rel="external">中文</a></li>
+<li><a href="https://www.ietf.org/rfc.html" target="_blank" rel="external">英文</a></li>
+</ul>
+<h2 id="tcp-ip协议族体系结构以及主要协议"><a class="header-anchor" href="#tcp-ip协议族体系结构以及主要协议">¶</a>TCP/IP协议族体系结构以及主要协议</h2>
+<hr>
+<p>四层:</p>
+<ul>
+<li>链路层</li>
+<li>网络层</li>
+<li>传输层</li>
+<li>应用层</li>
+</ul>
+<p><strong>NOTE: 链路层, 网络层, 传输层由于需要稳定而可靠的服务, 都在内核空间当中实现. 只有应用层是交给用户空间实现.</strong><br>
+<img src="http://7i7i6p.com1.z0.glb.clouddn.com/blog/static/images/tcp-ip-overview-1.png" alt="tcp/ip协议体系结构图"></p>
+<h3 id="数据链路层"><a class="header-anchor" href="#数据链路层">¶</a>数据链路层</h3>
+<hr>
+<p><strong>定义/职责</strong>: 实现了网卡接口和网络驱动程序, 以处理数据在物理媒介(例如, 以太网和令牌环网络)上的传输. 定义了统一的接口, 屏蔽了物理层传输的细节.</p>
+<p><strong>常用协议</strong>: ARP(Address Resolve Protocol) and RARP(Reverse Address Resolve Protocol), 实现了IP地址到物理地址(通常是mac地址, 以太网, 令牌环, 802.11无线网络都使用mac地址作为物理地址.)之间的转换.</p>
+<ul>
+<li>ARP比较好理解, 也是大多数情况下会使用的协议.</li>
+<li>RARP用于无盘工作站, 由于无存储设备, 因此无法记录IP地址, 但是可以通过mac地址向某个IP地址提供者(例如其它服务器 or 网络管理软件)查询自生的IP地址. 相当于通过一个第三方, 进行mac地址到IP地址的反向查询.</li>
+</ul>
+<h3 id="网络层"><a class="header-anchor" href="#网络层">¶</a>网络层</h3>
+<hr>
+<p><strong>定义/职责</strong>: 实现了数据包的路由和转发. 由于WAN(Wide area network-广域网) 通常使用众多分级的路由器来连接分散的机器或者LAN(Local area netword-局域网), 两台主机一般不会直接连接, 而是需要多个中间节点(路由器)来连接.</p>
+<p><strong>网络层的任务</strong>:</p>
+<ul>
+<li>选择数据报要经过哪些中间节点, 以确定两台之间的通信路径.</li>
+<li>屏蔽了链路层的网络拓扑结构的细节, 让上层(传输层, 应用层)看起来像是直接在通信.</li>
+</ul>
+<p><strong>常用协议</strong>: IP协议 and ICMP协议.</p>
+<ul>
+<li>IP协议: IP协议根据数据包的目的IP地址来决定如何投递它.**如果数据包不能直接发送给目标主机,那么IP协议就为它寻找一个合适的下一跳(next hop)(TTL减1直至被丢弃)路由器,并将数据包交付给该路由器来转发.**多次重复这一过程,数据包最终到达目标主机,或者由于发送失败而被丢弃.</li>
+<li>ICMP(Internet Control Message Protocol)协议: 它是IP协议的重要补充,主要用于<strong>检测网络连接</strong>.</li>
+</ul>
+<p>下图为ICMP报文格式:<br>
+<img src="http://7i7i6p.com1.z0.glb.clouddn.com/blog/static/images/icmp-datagram.png" alt="ICMP报文格式"></p>
+<ul>
+<li>8 bit类型字段: 标识报文类型.
+<ul>
+<li>差错报文: 主要用于回应网络错误. 比如目标不可达(值为3), 目标重定向(值为5)</li>
+<li>查询报文: 主要用于查询网络信息. 比如ping程序使用ICMP查询目标是否可达(值为8).有的ICMP报文还使用8位代码字段来进一步细分不同的条件.比如重定向报文使用代码值0表示对网络重定向,代码值1表示对主机重定向.ICMP报文使用16位校验和字段对整个报文(包括头部和内容部分)进行循环冗余校验(Cyclic RedundancyCheck,CRC),以检验报文在传输过程中是否损坏. 关于完整的类型编码, 参考: <a href="http://www.nthelp.com/icmp.html" target="_blank" rel="external">http://www.nthelp.com/icmp.html</a></li>
+</ul>
+</li>
+<li>完整的协议介绍参考RFC 792</li>
+<li>需要指出的是,<strong>ICMP协议并非严格意义上的网络层协议,因为它使用处于同一层的IP协议提供的服务(一般来说,上层协议使用下层协议提供的服务).</strong></li>
+</ul>
+<h3 id="传输层"><a class="header-anchor" href="#传输层">¶</a>传输层</h3>
+<hr>
+<p><strong>定义/职责</strong>: 传输层为两台主机上的应用程序提供端到端(end to end)的通信.与网络层使用的逐跳通信方式不同,传输层只关心通信的起始端和目的端,而不在乎数据包的中转过程.<br>
+<img src="http://7i7i6p.com1.z0.glb.clouddn.com/blog/static/images/diff-network-transmission.png" alt="传输层与网络层的区别"></p>
+<p><strong>传输层的任务</strong>: 为应用程序封装了一条端到端的逻辑通信链路,它负责数据的收发、链路的超时重连等.</p>
+<p><strong>常用协议</strong>: TCP UDP SCTP</p>
+<ul>
+<li>
+<p>TCP(Transmission Control Protocol): 面向连接, 可靠, 基于流(stream)的协议.</p>
+<ul>
+<li><strong>可靠性:</strong> 使用超时重传、数据确认等方式来确保数据包被正确地发送至目的端.</li>
+<li><strong>面向连接:</strong> 使用TCP通信两端之前必须先建立连接,并在内核中为该连接维持一些必要的数据结构,比如连接的状态、读写缓冲区,以及诸多定时器等.当通信结束时,双方必须关闭连接以释放这些内核数据. 连接 and 关闭.</li>
+<li><strong>基于流:</strong> 基于流的数据没有边界(长度)限制,它源源不断地从通信的一端流入另一端.发送端可以逐个字节地向数据流中写入数据,接收端也可以逐个字节地将它们读出.</li>
+</ul>
+</li>
+<li>
+<p>UDP(User Datagram Protocol): 无连接, 不可靠, 基于数据报的协议.</p>
+<ul>
+<li><strong>不靠性:</strong> 无法保证数据从发送端正确地传送到目的端.如果数据在中途丢失,或者目的端通过数据校验发现数据错误而将其丢弃,则UDP协议只是简单地通知应用程序发送失败.</li>
+<li><strong>无连接:</strong> 使用TCP通信两端之前必须先建立连接,并在内核中为该连接维持一些必要的数据结构,比如连接的状态、读写缓冲区,以及诸多定时器等.当通信结束时,双方必须关闭连接以释放这些内核数据. 连接 and 关闭.</li>
+<li><strong>基于数据报:</strong> 基于数据报的服务,是相对基于流的服务而言的.每个UDP数据报都有一个长度,接收端必须以该长度为最小单位将其所有内容一次性读出,否则数据将被截断.</li>
+</ul>
+</li>
+<li>
+<p><strong>是UDP还是TCP? 到底如何选?</strong><br>
+“When in doubt, use TCP&quot;<br>
+参考: <a href="https://www.zhihu.com/question/20060141" target="_blank" rel="external">https://www.zhihu.com/question/20060141</a></p>
+</li>
+<li>
+<p>SCTP: SCTP 是在 IP 网络上使用的一种可靠的通用传输层协议.尽管 SCTP 协议最初是为发送电话信号而设计的(RFC 2960),但带来了一个意外的收获：它通过借鉴 UDP 的优点解决了 TCP 的某些局限.SCTP 提供的特性使套接字初始化的可用性、可靠性和安全性都得以提高.<br>
+参考: <a href="https://www.ibm.com/developerworks/cn/linux/l-sctp/" target="_blank" rel="external">https://www.ibm.com/developerworks/cn/linux/l-sctp/</a></p>
+</li>
+</ul>
+<h3 id="应用层"><a class="header-anchor" href="#应用层">¶</a>应用层</h3>
+<hr>
+<p><strong>定义/职责</strong>: 负责处理应用程序的逻辑. 应用层在用户空间实现,因为它负责处理众多逻辑,比如文件传输、名称查询和网络管理等. 如果应用层也在内核中实现,则会使内核变得非常庞大.当然,也有少数服务器程序是在内核中实现的,这样代码就无须在用户空间和内核空间来回切换(主要是数据的复制),极大地提高了工作效率.</p>
+<p><strong>常见应用程序/协议:</strong></p>
+<ul>
+<li>ping</li>
+<li>telnet</li>
+<li>SSH</li>
+<li>DNS</li>
+<li>http</li>
+</ul>
+<p><strong>NOTE:</strong></p>
+<ul>
+<li>某些应用程序/协议<strong>会跳过传输层</strong>, 直接和网络层进行通信, 例如: ping程序.</li>
+<li>应用程序/协议<strong>可以使用任意传输层协议</strong>来实现, 例如TCP, UDP. 还可以<strong>组合一个或多个传输层协议</strong>来实现. (DNS).</li>
+<li>通过/etc/services来查看有哪些应用层程序/协议-端口的实现.</li>
+</ul>
+<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo vi <span class="regexp">/etc/</span>services</span><br></pre></td></tr></table></figure>
+<p><img src="http://7i7i6p.com1.z0.glb.clouddn.com/blog/static/images/etc-services.png" alt="/etc/services"></p>
+<h3 id="封装-encapsulation"><a class="header-anchor" href="#封装-encapsulation">¶</a>封装(<strong>Encapsulation</strong>)</h3>
+<hr>
+<p><strong>问题:</strong> 上层协议是如何使用下层协议提供的服务?如何将应用层的数据转换为frame并在物理链路层传输?</p>
+<p><strong>定义/职责:</strong> 应用程序数据在发送到物理网络上之前,将沿着协议栈<strong>从上往下依次传递</strong>.<strong>每层协议都将在上层数据的基础上加上自己的头部信息(有时还包括尾部信息)</strong>,以实现该层的功能,这个过程就称为封装.<br>
+<img src="http://7i7i6p.com1.z0.glb.clouddn.com/blog/static/images/encapsulation.png" alt="封装"></p>
+<p><strong>封装步骤:</strong></p>
+<ol>
+<li>经过TCP封装后的数据称为TCP报文段(<strong>TCP message segment</strong>),或者简称TCP段.TCP协议为通信双方维持一个连接,并且在内核中存储相关数据.这部分数据中的TCP头部信息和TCP内核缓冲区发送缓冲区或接收缓冲区)数据一起构成了TCP报文段.当发送端应用程序使用send(或者write)函数向一个TCP连接写入数据时,内核中的TCP模块首先把这些数据复制到与该连接对应的TCP内核发送缓冲区中,然后TCP模块调用IP模块提供的服务,传递的参数包括TCP头部信息和TCP发送缓冲区中的数据,即TCP报文段.<br>
+<img src="http://7i7i6p.com1.z0.glb.clouddn.com/blog/static/images/tcp-ip-encapsulation.png" alt="tcp封装过程"></li>
+<li>如果是UDP协议, 经过UDP封装后的数据称为UDP数据报(<strong>UDP Datagram</strong>).不同的是,<strong>UDP无须为应用层数据保存副本</strong>,因为它提供的服务是不可靠的.**当一个UDP数据报被成功发送之后,UDP内核缓冲区中的该数据报就被丢弃了.**如果应用程序检测到该数据报未能被接收端正确接收,并打算重发这个数据报,则应用程序需要重新从用户空间将该数据报拷贝到UDP内核发送缓冲区中.</li>
+<li>经过IP封装后的数据称为IP数据报(<strong>IP Datagram</strong>).IP数据报也包括头部信息和数据部分,其中数据部分就是一个TCP报文段、UDP数据报或者ICMP报文.</li>
+<li>经过数据链路层封装的数据称为帧(<strong>frame</strong>).传输媒介不同,帧的类型也不同.比如,以太网上传输的是以太网帧(Ethernet frame),而令牌环网络上传输的则是令牌环帧(token ring frame).</li>
+<li>以Ethernet frame为例:<br>
+<img src="http://7i7i6p.com1.z0.glb.clouddn.com/blog/static/images/ethernet-encapsulation.png" alt="以太网封装过程">以太网帧使用6字节的目的物理地址和6字节的源物理地址来表示通信的双方.4字节CRC字段对帧的其他部分提供循环冗余校验.帧的最大传输单元(<strong>Max Transmit Unit,MTU</strong>),即帧最多能携带多少上层协议数据(比如IP数据报),通常受到网络类型的限制.<strong>以太网帧的MTU是1500字节.正因为如此,过长的IP数据报可能需要被分片(fragment)传输.</strong></li>
+<li>上述3个步骤, 完成了最终的封装过程. <strong>frame才是最终在物理链路层上传输的二进制字节方式.</strong></li>
+</ol>
+<h3 id="分用-demultiplexing"><a class="header-anchor" href="#分用-demultiplexing">¶</a>分用(<strong>Demultiplexing</strong>)</h3>
+<hr>
+<p><strong>问题:</strong> 当frame通过物理链路层到达目的主机之后, 如何将frame进行分解并传递给上层直至应用程序？</p>
+<p><strong>定义/职责:</strong> 当帧到达目的主机时,将沿着协议栈<strong>自底向上依次传递</strong>.各层协议依次处理帧中本层负责的头部数据,以获取所需的信息,并最终将处理后的帧交给目标应用程序.这个过程称为分用(<strong>demultiplexing</strong>).分用是依靠头部信息中的类型字段实现的.标准文档RFC 1700定义了所有标识上层协议的类型字段以及每个上层协议对应的数值.<br>
+<img src="http://7i7i6p.com1.z0.glb.clouddn.com/blog/static/images/demultiplexing.png" alt="分用"></p>
+<p><strong>分用步骤:</strong></p>
+<ol>
+<li>在物理链路层传递给<strong>网卡驱动程序</strong>, 将frame分解为网络层可以理解的数据格式(满足某种协议规范), 包括: IP, ARP, RARP. 根据frame当中的Type字段来标识出对应的协议类型. 比如: Eternet frame中, 包括2字节类型字段. 具体的值包括:</li>
+</ol>
+<blockquote>
+<ul>
+<li>0x800: IP</li>
+<li>0x806: ARP</li>
+<li>0x835: RARP</li>
+</ul>
+</blockquote>
+<ol start="2">
+<li>同样, 基于IP协议的ICMP, TCP, UDP, 会根据IP Datagram Header当中的16 bit协议类型字段, 来标识需要提供给传输层的哪一个具体的协议去处理.</li>
+<li>最后, 传输层的TCP, UDP会根据TCP Message Segment or UDP Datagram中header部分的16 bit 端口号, (再次参考: /etc/services中的定义)来决定交给哪个应用层协议/程序去进行处理. 比如DNS的53, HTTP的80, FTP的22.</li>
+</ol>
+<p>最终上述3个过程完成了封送, 最终将封装前的原始数据送至目标服务:ARP服务、RARP服务、ICMP服务或者应用程序/协议.</p>
 ]]></content>
     <summary type="html">
-    <![CDATA[<p>Welcome to <a href="http://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="http://hexo.io]]>
+    <![CDATA[<h2 id="关于本系列文章"><a class="header-anchor" href="#关于本系列文章">¶</a>关于本系列文章</h2>
+<hr>
+<p>我在学习TCP/IP协议以及Linux服务器端编程时, 原本打算学习和参考三本经典书籍:</p>
+<ol>
+<l]]>
     </summary>
+    
+      <category term="linux, tcp/ip" scheme="http://leonzhu1981.github.io/tags/linux-tcp-ip/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[Cmd Markdown 简明语法手册]]></title>
+    <link href="http://leonzhu1981.github.io/2015/cmd-Markdown-%E7%AE%80%E6%98%8E%E8%AF%AD%E6%B3%95%E6%89%8B%E5%86%8C/"/>
+    <id>http://leonzhu1981.github.io/2015/cmd-Markdown-简明语法手册/</id>
+    <published>2015-12-21T01:08:06.000Z</published>
+    <updated>2015-12-21T01:21:43.000Z</updated>
+    <content type="html"><![CDATA[<h3 id="1-斜体和粗体"><a class="header-anchor" href="#1-斜体和粗体">¶</a>1. 斜体和粗体</h3>
+<p>使用 * 和 ** 表示斜体和粗体。</p>
+<p>示例：</p>
+<p>这是 <em>斜体</em>，这是 <strong>粗体</strong>。</p>
+<h3 id="2-分级标题"><a class="header-anchor" href="#2-分级标题">¶</a>2. 分级标题</h3>
+<p>使用 === 表示一级标题，使用 — 表示二级标题。</p>
+<p>示例：</p>
+<figure class="highlight asciidoc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="header">这是一个一级标题</span><br><span class="line">============================</span></span><br><span class="line"></span><br><span class="line"><span class="header">这是一个二级标题</span><br><span class="line">--------------------------------------------------</span></span><br><span class="line"></span><br><span class="line">### 这是一个三级标题</span><br></pre></td></tr></table></figure>
+<p>你也可以选择在行首加井号表示不同级别的标题 (H1-H6)，例如：# H1, ## H2, ### H3，#### H4。</p>
+<h3 id="3-外链接"><a class="header-anchor" href="#3-外链接">¶</a>3. 外链接</h3>
+<p>使用 [描述](链接地址) 为文字增加外链接。</p>
+<p>示例：</p>
+<p>这是去往 <a href="http://ghosertblog.github.com" target="_blank" rel="external">本人博客</a> 的链接。</p>
+<h3 id="4-无序列表"><a class="header-anchor" href="#4-无序列表">¶</a>4. 无序列表</h3>
+<p>使用 *，+，- 表示无序列表。</p>
+<p>示例：</p>
+<ul>
+<li>无序列表项 一</li>
+<li>无序列表项 二</li>
+<li>无序列表项 三</li>
+</ul>
+<h3 id="5-有序列表"><a class="header-anchor" href="#5-有序列表">¶</a>5. 有序列表</h3>
+<p>使用数字和点表示有序列表。</p>
+<p>示例：</p>
+<ol>
+<li>有序列表项 一</li>
+<li>有序列表项 二</li>
+<li>有序列表项 三</li>
+</ol>
+<h3 id="6-文字引用"><a class="header-anchor" href="#6-文字引用">¶</a>6. 文字引用</h3>
+<p>使用 &gt; 表示文字引用。</p>
+<p>示例：</p>
+<blockquote>
+<p>野火烧不尽，春风吹又生。</p>
+</blockquote>
+<h3 id="7-行内代码块"><a class="header-anchor" href="#7-行内代码块">¶</a>7. 行内代码块</h3>
+<p>使用 `代码` 表示行内代码块。</p>
+<p>示例：</p>
+<p>让我们聊聊 <code>html</code>。</p>
+<h3 id="8-代码块"><a class="header-anchor" href="#8-代码块">¶</a>8.  代码块</h3>
+<p>使用 四个缩进空格 表示代码块。</p>
+<p>示例：</p>
+<pre><code>这是一个代码块，此行左侧有四个不可见的空格。
+</code></pre>
+<h3 id="9-插入图像"><a class="header-anchor" href="#9-插入图像">¶</a>9.  插入图像</h3>
+<p>使用 ![描述](图片链接地址) 插入图像。</p>
+<p>示例：</p>
+<p><img src="https://www.zybuluo.com/static/img/my_head.jpg" alt="我的头像"></p>
+<h1>Cmd Markdown 高阶语法手册</h1>
+<h3 id="1-内容目录"><a class="header-anchor" href="#1-内容目录">¶</a>1. 内容目录</h3>
+<p>在段落中填写 <code>[TOC]</code> 以显示全文内容的目录结构。</p>
+<p>[TOC]</p>
+<h3 id="2-标签分类"><a class="header-anchor" href="#2-标签分类">¶</a>2. 标签分类</h3>
+<p>在编辑区任意行的列首位置输入以下代码给文稿标签：</p>
+<p>标签： 数学 英语 Markdown</p>
+<p>或者</p>
+<p>Tags： 数学 英语 Markdown</p>
+<h3 id="3-删除线"><a class="header-anchor" href="#3-删除线">¶</a>3. 删除线</h3>
+<p>使用 ~~ 表示删除线。</p>
+<p><s>这是一段错误的文本。</s></p>
+<h3 id="4-注脚"><a class="header-anchor" href="#4-注脚">¶</a>4. 注脚</h3>
+<p>使用 [^keyword] 表示注脚。</p>
+<p>这是一个注脚<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup>的样例。</p>
+<p>这是第二个注脚<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup>的样例。</p>
+<h3 id="5-latex-公式"><a class="header-anchor" href="#5-latex-公式">¶</a>5. LaTeX 公式</h3>
+<p>$ 表示行内公式：</p>
+<p>质能守恒方程可以用一个很简洁的方程式 $E=mc^2$ 来表达。</p>
+<p>$$ 表示整行公式：</p>
+<p>$$\sum_{i=1}^n a_i=0$$</p>
+<p>$$f(x_1,x_x,\ldots,x_n) = x_1^2 + x_2^2 + \cdots + x_n^2 $$</p>
+<p>$$\sum^{j-1}<em>{k=0}{\widehat{\gamma}</em>{kj} z_k}$$</p>
+<p>访问 <a href="http://meta.math.stackexchange.com/questions/5020/mathjax-basic-tutorial-and-quick-reference" target="_blank" rel="external">MathJax</a> 参考更多使用方法。</p>
+<h3 id="6-加强的代码块"><a class="header-anchor" href="#6-加强的代码块">¶</a>6. 加强的代码块</h3>
+<p>支持四十一种编程语言的语法高亮的显示，行号显示。</p>
+<p>非代码示例：</p>
+<figure class="highlight vim"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo apt-<span class="built_in">get</span> install <span class="keyword">vim</span>-gnome</span><br></pre></td></tr></table></figure>
+<p>Python 示例：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="decorator">@requires_authorization</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">somefunc</span><span class="params">(param1=<span class="string">''</span>, param2=<span class="number">0</span>)</span>:</span></span><br><span class="line">    <span class="string">'''A docstring'''</span></span><br><span class="line">    <span class="keyword">if</span> param1 &gt; param2: <span class="comment"># interesting</span></span><br><span class="line">        <span class="keyword">print</span> <span class="string">'Greater'</span></span><br><span class="line">    <span class="keyword">return</span> (param2 - param1 + <span class="number">1</span>) <span class="keyword">or</span> <span class="keyword">None</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SomeClass</span>:</span></span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"><span class="prompt">&gt;&gt;&gt; </span>message = <span class="string">'''interpreter</span><br><span class="line"><span class="prompt">... </span>prompt'''</span></span><br></pre></td></tr></table></figure>
+<p>JavaScript 示例：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span><br><span class="line">* nth element in the fibonacci series.</span><br><span class="line">* @param n &gt;= 0</span><br><span class="line">* @return the nth element, &gt;= 0.</span><br><span class="line">*/</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">fib</span>(<span class="params">n</span>) </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> a = <span class="number">1</span>, b = <span class="number">1</span>;</span><br><span class="line">  <span class="keyword">var</span> tmp;</span><br><span class="line">  <span class="keyword">while</span> (--n &gt;= <span class="number">0</span>) &#123;</span><br><span class="line">    tmp = a;</span><br><span class="line">    a += b;</span><br><span class="line">    b = tmp;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">return</span> a;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">document</span>.write(fib(<span class="number">10</span>));</span><br></pre></td></tr></table></figure>
+<h3 id="7-流程图"><a class="header-anchor" href="#7-流程图">¶</a>7. 流程图</h3>
+<h4 id="示例"><a class="header-anchor" href="#示例">¶</a>示例</h4>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">st=&#62;start: Start:&#62;https://www.zybuluo.com&#10;io=&#62;inputoutput: verification&#10;op=&#62;operation: Your Operation&#10;cond=&#62;condition: Yes or No?&#10;sub=&#62;subroutine: Your Subroutine&#10;e=&#62;end&#10;&#10;st-&#62;io-&#62;op-&#62;cond&#10;cond(yes)-&#62;e&#10;cond(no)-&#62;sub-&#62;io</span><br></pre></td></tr></table></figure>
+<h4 id="更多语法参考：流程图语法参考"><a class="header-anchor" href="#更多语法参考：流程图语法参考">¶</a>更多语法参考：<a href="http://adrai.github.io/flowchart.js/" target="_blank" rel="external">流程图语法参考</a></h4>
+<h3 id="8-序列图"><a class="header-anchor" href="#8-序列图">¶</a>8. 序列图</h3>
+<h4 id="示例-1"><a class="header-anchor" href="#示例-1">¶</a>示例 1</h4>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Alice-&#62;Bob: Hello Bob, how are you?&#10;Note right of Bob: Bob thinks&#10;Bob--&#62;Alice: I am good thanks!</span><br></pre></td></tr></table></figure>
+<h4 id="示例-2"><a class="header-anchor" href="#示例-2">¶</a>示例 2</h4>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Title: Here is a title&#10;A-&#62;B: Normal line&#10;B--&#62;C: Dashed line&#10;C-&#62;&#62;D: Open arrow&#10;D--&#62;&#62;A: Dashed open arrow</span><br></pre></td></tr></table></figure>
+<h4 id="更多语法参考：序列图语法参考"><a class="header-anchor" href="#更多语法参考：序列图语法参考">¶</a>更多语法参考：<a href="http://bramp.github.io/js-sequence-diagrams/" target="_blank" rel="external">序列图语法参考</a></h4>
+<h3 id="9-表格支持"><a class="header-anchor" href="#9-表格支持">¶</a>9. 表格支持</h3>
+<table>
+<thead>
+<tr>
+<th>项目</th>
+<th style="text-align:right">价格</th>
+<th style="text-align:center">数量</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>计算机</td>
+<td style="text-align:right">$1600</td>
+<td style="text-align:center">5</td>
+</tr>
+<tr>
+<td>手机</td>
+<td style="text-align:right">$12</td>
+<td style="text-align:center">12</td>
+</tr>
+<tr>
+<td>管线</td>
+<td style="text-align:right">$1</td>
+<td style="text-align:center">234</td>
+</tr>
+</tbody>
+</table>
+<h3 id="10-定义型列表"><a class="header-anchor" href="#10-定义型列表">¶</a>10. 定义型列表</h3>
+<p>名词 1<br>
+:   定义 1（左侧有一个可见的冒号和四个不可见的空格）</p>
+<p>代码块 2<br>
+:   这是代码块的定义（左侧有一个可见的冒号和四个不可见的空格）</p>
+<pre><code>    代码块（左侧有八个不可见的空格）
+</code></pre>
+<h3 id="11-html-标签"><a class="header-anchor" href="#11-html-标签">¶</a>11. Html 标签</h3>
+<p>本站支持在 Markdown 语法中嵌套 Html 标签，譬如，你可以用 Html 写一个纵跨两行的表格：</p>
+<pre><code>&lt;table&gt;
+    &lt;tr&gt;
+        &lt;th rowspan=&quot;2&quot;&gt;值班人员&lt;/th&gt;
+        &lt;th&gt;星期一&lt;/th&gt;
+        &lt;th&gt;星期二&lt;/th&gt;
+        &lt;th&gt;星期三&lt;/th&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+        &lt;td&gt;李强&lt;/td&gt;
+        &lt;td&gt;张明&lt;/td&gt;
+        &lt;td&gt;王平&lt;/td&gt;
+    &lt;/tr&gt;
+&lt;/table&gt;
+</code></pre>
+<table>
+    <tr>
+        <th rowspan="2">值班人员</th>
+        <th>星期一</th>
+        <th>星期二</th>
+        <th>星期三</th>
+    </tr>
+    <tr>
+        <td>李强</td>
+        <td>张明</td>
+        <td>王平</td>
+    </tr>
+</table>
+<h3 id="12-内嵌图标"><a class="header-anchor" href="#12-内嵌图标">¶</a>12. 内嵌图标</h3>
+<p>本站的图标系统对外开放，在文档中输入</p>
+<pre><code>&lt;i class=&quot;icon-weibo&quot;&gt;&lt;/i&gt;
+</code></pre>
+<p>即显示微博的图标： <i class="icon-weibo icon-2x"></i></p>
+<p>替换 上述 <code>i 标签</code> 内的 <code>icon-weibo</code> 以显示不同的图标，例如：</p>
+<pre><code>&lt;i class=&quot;icon-renren&quot;&gt;&lt;/i&gt;
+</code></pre>
+<p>即显示人人的图标： <i class="icon-renren icon-2x"></i></p>
+<p>更多的图标和玩法可以参看 <a href="http://fortawesome.github.io/Font-Awesome/3.2.1/icons/" target="_blank" rel="external">font-awesome</a> 官方网站。</p>
+<h3 id="13-待办事宜-todo-列表"><a class="header-anchor" href="#13-待办事宜-todo-列表">¶</a>13. 待办事宜 Todo 列表</h3>
+<p>使用带有 [ ] 或 [x] （未完成或已完成）项的列表语法撰写一个待办事宜列表，并且支持子列表嵌套以及混用Markdown语法，例如：</p>
+<pre><code>- [ ] **Cmd Markdown 开发**
+    - [ ] 改进 Cmd 渲染算法，使用局部渲染技术提高渲染效率
+    - [ ] 支持以 PDF 格式导出文稿
+    - [x] 新增Todo列表功能 [语法参考](https://github.com/blog/1375-task-lists-in-gfm-issues-pulls-comments)
+    - [x] 改进 LaTex 功能
+        - [x] 修复 LaTex 公式渲染问题
+        - [x] 新增 LaTex 公式编号功能 [语法参考](http://docs.mathjax.org/en/latest/tex.html#tex-eq-numbers)
+- [ ] **七月旅行准备**
+    - [ ] 准备邮轮上需要携带的物品
+    - [ ] 浏览日本免税店的物品
+    - [x] 购买蓝宝石公主号七月一日的船票
+</code></pre>
+<p>对应显示如下待办事宜 Todo 列表：</p>
+<ul>
+<li>[ ] <strong>Cmd Markdown 开发</strong>
+<ul>
+<li>[ ] 改进 Cmd 渲染算法，使用局部渲染技术提高渲染效率</li>
+<li>[ ] 支持以 PDF 格式导出文稿</li>
+<li>[x] 新增Todo列表功能 <a href="https://github.com/blog/1375-task-lists-in-gfm-issues-pulls-comments" target="_blank" rel="external">语法参考</a></li>
+<li>[x] 改进 LaTex 功能
+<ul>
+<li>[x] 修复 LaTex 公式渲染问题</li>
+<li>[x] 新增 LaTex 公式编号功能 <a href="http://docs.mathjax.org/en/latest/tex.html#tex-eq-numbers" target="_blank" rel="external">语法参考</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>[ ] <strong>七月旅行准备</strong>
+<ul>
+<li>[ ] 准备邮轮上需要携带的物品</li>
+<li>[ ] 浏览日本免税店的物品</li>
+<li>[x] 购买蓝宝石公主号七月一日的船票</li>
+</ul>
+</li>
+</ul>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p>这是一个 <em>注脚</em> 的 <strong>文本</strong>。 <a href="#fnref1" class="footnote-backref">↩</a></p>
+</li>
+<li id="fn2" class="footnote-item"><p>这是另一个 <em>注脚</em> 的 <strong>文本</strong>。 <a href="#fnref2" class="footnote-backref">↩</a></p>
+</li>
+</ol>
+</section>
+]]></content>
+    <summary type="html">
+    <![CDATA[<h3 id="1-斜体和粗体"><a class="header-anchor" href="#1-斜体和粗体">¶</a>1. 斜体和粗体</h3>
+<p>使用 * 和 ** 表示斜体和粗体。</p>
+<p>示例：</p>
+<p>这是 <em>斜体</em>，这是 <stro]]>
+    </summary>
+    
+      <category term="markdown cmd-markdown" scheme="http://leonzhu1981.github.io/tags/markdown-cmd-markdown/"/>
     
   </entry>
   
